@@ -1,0 +1,30 @@
+import requests
+import json
+def get_weather(location):
+    """Get the current weather for a given location."""
+    # Make an API request to retrieve weather data
+    api_key = "YOUR_API_KEY"
+    url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}"
+    response = requests.get(url.format(location, api_key))
+    # Parse and extract relevant weather information
+    data = json.loads(response.text)
+    weather_info = {
+        "temperature": data["main"]["temp"],
+        "humidity": data["main"]["humidity"],
+        "description": data["weather"][0]["description"],
+        "wind_speed": data["wind"]["speed"],
+    }
+    return weather_info
+def main():
+    # Prompt the user to enter the name of a city or a zip code
+    location = input("Enter a city name or zip code: ")
+    # Get the current weather for the given location
+    weather_info = get_weather(location)
+    # Display the retrieved weather information to the user
+    print("Current weather in {}:".format(location))
+    print("Temperature:", weather_info["temperature"], "degrees Fahrenheit")
+    print("Humidity:", weather_info["humidity"], "%")
+    print("Description:", weather_info["description"])
+    print("Wind speed:", weather_info["wind_speed"], "mph")
+if __name__ == "__main__":
+    main()
